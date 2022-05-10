@@ -3,6 +3,7 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
+  userWarningClosedAt: string | null;
 }
 
 export interface UserGQLResponse {
@@ -10,4 +11,5 @@ export interface UserGQLResponse {
   firstName: string;
   lastName: string;
   email: string;
+  userWarningClosedAt: string | null;
 }

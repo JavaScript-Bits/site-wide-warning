@@ -1,126 +1,20 @@
 import React, {useState} from 'react';
-import {useQuery, gql} from '@apollo/client';
 import {useSetRecoilState, useRecoilState} from 'recoil';
 import ChangeUserDropdown from './ChangeUserDropdown';
 import {currentUserState, nextUserState} from '../atoms/UserState';
 import {showDropdownState} from '../atoms/ChangeUserDropdownState';
 import {showModalState} from '../atoms/ChangeUserModalState';
-import {User, UserGQLResponse} from '../models/User';
+import {User} from '../models/User';
 import Logger from '../utils/Logger';
 import {GoChevronDown, GoChevronUp} from 'react-icons/go';
 import LoadingOverlay from './LoadingOverlay';
 import ErrorOverlay from './ErrorOverlay';
-
-interface UserManyData {
-  userMany: UserGQLResponse[];
-}
-
-interface UserManyVars {
-  limit: number;
-}
-
-export const GET_USERS = gql`
-  query GetUser($limit: Int!) {
-    userMany(limit: $limit) {
-      _id
-      firstName
-      lastName
-      email
-    }
-  }
-`;
-
-const styles: {[key: string]: React.CSSProperties} = {
-  root: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'fixed',
-    left: '0',
-    top: '0',
-    height: '100vh',
-    width: '100vw',
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-    backdropFilter: 'blur(8px)',
-  },
-  modal: {
-    width: '500px',
-    height: '300px',
-    borderRadius: '10px',
-    backgroundColor: 'rgba(255, 255, 255, 1)',
-    paddingLeft: '20px',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    color: '#414141',
-    boxShadow:
-      '0px 6px 20px 0px rgba(176, 190, 197, 0.32), 0px 2px 4px 0px rgba(176, 190, 197, 0.32)',
-  },
-  dropdownButton: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderColor: '#C6C6C6',
-    borderRadius: '5px',
-    borderStyle: 'solid',
-    borderWidth: '1px',
-    paddingLeft: '10px',
-    paddingRight: '10px',
-    width: '450px',
-    height: '60px',
-  },
-  rotate180: {
-    transform: 'rotate(180deg)',
-  },
-  footer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    width: '450px',
-    padding: '20px',
-    fontWeight: 600,
-  },
-  cancelButton: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#EDEDED',
-    width: '140px',
-    height: '50px',
-    borderRadius: '5px',
-    marginRight: '15px',
-    cursor: 'default',
-  },
-  changeUserButton: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ABEFEB',
-    width: '140px',
-    height: '50px',
-    borderRadius: '5px',
-    cursor: 'default',
-  },
-  changeUserButtonDisabled: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ABEFEB',
-    opacity: 0.5,
-    width: '140px',
-    height: '50px',
-    borderRadius: '5px',
-    cursor: 'default',
-  },
-};
+import {styles} from '../utils/Styles';
+import {useGetUserHook} from '../hooks/userGetUserHook';
 
 const ChangeUserModal = () => {
-  const {loading, error, data} = useQuery<UserManyData, UserManyVars>(
-    GET_USERS,
-    {variables: {limit: 100}}
-  );
+  const {loading, error, data} = useGetUserHook();
+
   const setShowModal = useSetRecoilState(showModalState);
   const [showDropdown, setShowDropdown] = useRecoilState(showDropdownState);
   const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
@@ -183,9 +77,23 @@ const ChangeUserModal = () => {
           <ChangeUserDropdown
             users={
               data
-                ? data.userMany.map(({_id, firstName, lastName, email}) => {
-                    return {id: _id, firstName, lastName, email} as User;
-                  })
+                ? data.userMany.map(
+                    ({
+                      _id,
+                      firstName,
+                      lastName,
+                      email,
+                      userWarningClosedAt,
+                    }) => {
+                      return {
+                        id: _id,
+                        firstName,
+                        lastName,
+                        email,
+                        userWarningClosedAt,
+                      } as User;
+                    }
+                  )
                 : []
             }
             onSelect={user => {

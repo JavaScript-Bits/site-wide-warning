@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {useSetRecoilState} from 'recoil';
 
 import {showModalState} from '../atoms/ChangeUserModalState';
+import {showAdminCosoleModalState} from '../atoms/ChangeAdminConsoleModalState';
 import {showSettingsMenuState} from '../atoms/SettingsMenuState';
 
 const styles: {[key: string]: React.CSSProperties} = {
@@ -41,33 +42,43 @@ const SettingsMenuItemType = Object.freeze({
   SETTINGS: 'SETTINGS',
   HELP: 'HELP',
   CHANGE_USER: 'CHANGE_USER',
+  ADMIN_CONSOLE: 'ADMIN_CONSOLE',
 });
-
-const SettingsMenuItemConfigs = [
-  {
-    type: SettingsMenuItemType.SETTINGS,
-    label: 'Settings',
-    onClick: () => {},
-  },
-  {
-    type: SettingsMenuItemType.HELP,
-    label: 'Help',
-    onClick: () => {},
-  },
-  {
-    type: SettingsMenuItemType.CHANGE_USER,
-    label: 'Change User',
-    onClick: (setShowChangeUserModal: (value: boolean) => void) =>
-      setShowChangeUserModal(true),
-  },
-];
 
 const SettingsMenu = () => {
   const setShowChangeUserModal = useSetRecoilState(showModalState);
+  const setShowAdminCosoleModalState = useSetRecoilState(
+    showAdminCosoleModalState
+  );
   const setShowSettingsMenu = useSetRecoilState(showSettingsMenuState);
   const [hoveredMenuItemKey, setHoveredMenuItemKey] = useState<number | null>(
     null
   );
+
+  const SettingsMenuItemConfigs = [
+    {
+      type: SettingsMenuItemType.SETTINGS,
+      label: 'Settings',
+      onClick: () => {},
+    },
+    {
+      type: SettingsMenuItemType.HELP,
+      label: 'Help',
+      onClick: () => {},
+    },
+    {
+      type: SettingsMenuItemType.ADMIN_CONSOLE,
+      label: 'Admin Console',
+      onClick: () => {
+        setShowAdminCosoleModalState(true);
+      },
+    },
+    {
+      type: SettingsMenuItemType.CHANGE_USER,
+      label: 'Change User',
+      onClick: () => setShowChangeUserModal(true),
+    },
+  ];
 
   return (
     <div style={styles.overlay} onClick={() => setShowSettingsMenu(false)}>
@@ -82,7 +93,7 @@ const SettingsMenu = () => {
             }}
             onClick={() => {
               setShowSettingsMenu(false);
-              menuItem.onClick(setShowChangeUserModal);
+              menuItem.onClick();
             }}
             onMouseEnter={() => setHoveredMenuItemKey(idx)}
             onMouseLeave={() => setHoveredMenuItemKey(null)}
