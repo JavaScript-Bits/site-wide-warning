@@ -7,6 +7,7 @@ import {
   WarningGQLResponse,
 } from '../models/SiteWideWarning';
 import {User} from '../models/User';
+import Logger from '../utils/Logger';
 import {alertStyles, styles} from '../utils/Styles';
 
 interface ViewProps {
@@ -51,6 +52,12 @@ export const SiteWideWarning = ({appWarning, currentUser}: ViewProps) => {
         userWarningClosedAt: time,
       });
     }
+    Logger.info(
+      'User Switched off Warning: userName' +
+        currentUser?.firstName +
+        ' ' +
+        currentUser?.lastName
+    );
   };
 
   return (
