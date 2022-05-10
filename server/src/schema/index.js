@@ -3,10 +3,7 @@ import {SchemaComposer} from 'graphql-compose';
 const schemaComposer = new SchemaComposer();
 
 import {UserQuery, UserMutation} from './user';
-import {
-  AppWarningQuery,
-  AppWarningMutation,
-} from './warning';
+import {AppWarningQuery, AppWarningMutation} from './warning';
 
 schemaComposer.Query.addFields({
   ...UserQuery,

@@ -1,15 +1,12 @@
-import { AppWarningTC } from '../models/appWarning';
+import {AppWarningTC} from '../models/appWarning';
 
 const AppWarningQuery = {
-    appWarningOne: AppWarningTC.getResolver('findOne'),
+  appWarningOne: AppWarningTC.getResolver('findOne'),
 };
 
 const AppWarningMutation = {
-    appWarningCreateOne: AppWarningTC.getResolver('createOne'),
-    appWarningRemoveMany: AppWarningTC.getResolver('removeMany'),
+  appWarningCreateOne: AppWarningTC.getResolver('createOne'),
+  appWarningRemoveMany: AppWarningTC.getResolver('removeMany'),
 };
 
-export {
-    AppWarningQuery,
-    AppWarningMutation,
-};
+export {AppWarningQuery, AppWarningMutation};

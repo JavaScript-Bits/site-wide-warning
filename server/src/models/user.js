@@ -2,31 +2,34 @@ import mongoose, {Schema} from 'mongoose';
 import timestamps from 'mongoose-timestamp';
 import {composeWithMongoose} from 'graphql-compose-mongoose';
 
-export const UserSchema = new Schema({
-  firstName: {
-    type: String,
-    trim: true,
-    required: true,
-  },
-  lastName: {
-    type: String,
-    trim: true,
-    required: true,
-  },
-  email: {
-    type: String,
-    lowercase: true,
-    trim: true,
-    unique: true,
-    required: true,
-  },
-  userWarningClosedAt: {
-    type: Date,
-    required: false,
-  },
-}, {
-  collection: 'users',
-});
+export const UserSchema = new Schema(
+    {
+      firstName: {
+        type: String,
+        trim: true,
+        required: true,
+      },
+      lastName: {
+        type: String,
+        trim: true,
+        required: true,
+      },
+      email: {
+        type: String,
+        lowercase: true,
+        trim: true,
+        unique: true,
+        required: true,
+      },
+      userWarningClosedAt: {
+        type: Date,
+        required: false,
+      },
+    },
+    {
+      collection: 'users',
+    },
+);
 
 UserSchema.plugin(timestamps);
 
