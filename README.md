@@ -121,3 +121,32 @@ React Hooks: https://reactjs.org/docs/hooks-intro.html
 Recoil.js: https://recoiljs.org/
 
 Apollo Client: https://www.apollographql.com/docs/react/
+
+
+
+or this task, you will be building the Site-Wide Warning bar along with an admin console for administrators of the app to be able to turn warnings on and off or change them as necessary. Please reference the prototyped mock ups at this Figma link to get an understanding of how the interaction should work on completion.
+
+To persist state server-side, you will need to make updates to the server, which is a Node.js server running Express, serving GraphQL endpoints via Apollo, and using Mongoose to interact with your local MongoDB instance. You can use the existing User schema, query, and mutation endpoints as an example. Build the server-side GraphQL schema(s) and endpoints that enable the web app to start, update, and mitigate site wide warnings.
+
+A user must be able to dismiss the current ongoing warning. If a warning is updated to a different type, the user should see the new warning. Similarly, if a user dismissed the current warning, but it's ended, and a new warning starts, they should see the new warning.
+
+A warning consists of at least two fields:
+
+type: SiteWideWarningType
+label: String
+There are three types of warnings:
+
+Download Server Unavailable Warning
+Upload Server Unavailable Warning
+Data Inconsistency Warning
+Each type of warning has it's own hardcoded label which you can find in the Figma link attached above.
+Note: No more than one Site Wide Warning can be ongoing at the same time.
+
+Steps:
+
+Set up your local dev environment first. Refer to the set up instructions in the README.
+Seed your database with a few users. This is necessary to test that user-level warning dismissal. Refer to the data seeding instructions in the README.
+Build your solution in both the client and server.
+Log key events (ie: warning created, warning dismissed, etc) using the provided logger util. The more thorough your logs are, the better.
+Write some Jest tests for the features you built. The more thorough your tests are, the better.
+You are allowed to edit, remove, or add any file in this repository to complete the task.
